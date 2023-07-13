@@ -6,21 +6,23 @@ env:
     DT_PATH: device/$OEM/$DEVICE
     VT_LINK: https://github.com/nobiajay/android_vendor_oneplus_CPH2381.git
     VT_PATH: vendor/$OEM/$DEVICE
-    KT_LINK: https://github.com/ArrowOS-Devices/android_kernel_xiaomi_sm6250.git
+    KT_LINK: https://github.com/nobiajay/android_device_oneplus_CPH2381-kernel.git
     PLATFORM: sm6250
-    KT_PATH: kernel/$OEM/$PLATFORM
+    KT_PATH: device/oneplus/CPH2381-kernel
     TARGET: bacon
+    HW_LINK: https://github.com/LineageOS/android_hardware_oplus.git
+    HW_PATH: hardware/oplus
     EXTRA_CMD: export SKIP_ABI_CHECKS=true
-    LUNCH_COMBO: aosp_${DEVICE}-userdebug
-    OUTPUT: PixelExperience*.zip
+    LUNCH_COMBO: lineage_${DEVICE}-userdebug
+    OUTPUT: lineageos*.zip
 
 task:
   name: "Setting Up, Syncing, Building and Uploading..."
   timeout_in: 240m  
   container:
       image: ghcr.io/sushrut1101/docker:arch
-      cpu: 4
-      memory: 16G
+      cpu: 8
+      memory: 32G
 
 
 
@@ -36,10 +38,11 @@ task:
       - mkdir -p ~/work
       - cd ~/work
       - repo init --depth=1 -u $MANIFEST
-      - repo sync -j4 --force-sync --no-tags --no-clone-bundle
+      - repo sync -j8 --force-sync --no-tags --no-clone-bundle
       - git clone $DT_LINK $DT_PATH
       - git clone $VT_LINK $VT_PATH
       - git clone $KT_LINK $KT_PATH
+      - git clone $HW_LINK $HW_PATH
       - echo "============================"
       - echo "Syncing Complete!"
       - echo "============================"
